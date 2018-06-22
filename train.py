@@ -11,11 +11,11 @@ from time import strftime
 
 
 # Configuration
-PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 CHANNELS = ['main','fridge','air conditioner']
-HOUSES = [14, 39]
+HOUSES = [14, 19, 28, 39, 41, 51]
 HOUSES_PROB = []
-TRAIN_STEP = 10
+TRAIN_STEP = 10000
 FREQ_REAL_SYN = 2
 
 
