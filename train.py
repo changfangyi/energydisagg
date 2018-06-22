@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function, division
 import os
+import argparse
 from lib import dirs
 import importlib
 import numpy as np
@@ -14,16 +15,17 @@ from time import strftime
 # Configuration
 PATH = '/Users/kang/Desktop/energydisagg' # multi_group
 #PATH = '/home/nilm/Desktop/energydisagg' # multi_group
-CHANNELS = ['main','fridge','air conditioner']
-HOUSES = [14, 19, 28, 39, 41, 51]
-HOUSES_PROB = []
-TRAIN_STEP = 100
+APPLIANCES = None
+CHANNELS = None
+HOUSES = None
+NUM_STEPS = None
 FREQ_REAL_SYN = 2
-
 
 def main():
     os.chdir(PATH)
     data_path = os.path.join(PATH, 'data', 'multi_group')
+    parse_args()
+    load_config()
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, data_path)
     print('Get Batch for Training:')
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
@@ -33,7 +35,7 @@ def main():
 
     topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + 'multi_CLDNN', __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
-    for i in range(TRAIN_STEP):
+    for i in range(NUM_STEPS):
         if i % FREQ_REAL_SYN == 0:
             main, targets = real_source._get_batch()
             while main is None or targets is None:
@@ -75,7 +77,33 @@ def main():
         model_name = model_name + '_' + item
     print('Saving model ', model_name, '.h5')
     model.save(os.path.join(PATH, 'models', 'config_' + model_name + '.h5'))
-                
+
+def parse_args():
+    global APPLIANCES, NUM_STEPS
+    parser = argparse.ArgumentParser()
+     # required
+    required_named_arguments = parser.add_argument_group('required named arguments')
+    required_named_arguments.add_argument('-a', '--appliancess',
+                                          help='FB fridge and bottle warmer',
+                                          required=True)
+    required_named_arguments.add_argument('-t', '--num-steps',
+                                          help='Number of steps.',
+                                          type=int,
+                                          required=True)
+     # start parsing
+    args = parser.parse_args()
+    APPLIANCES = args.appliancess
+    NUM_STEPS = args.num_steps
+
+def load_config():
+    global CHANNELS, HOUSES 
+    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'train', __name__)
+    if APPLIANCES == 'FB':
+        HOUSES = config_module.FB
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','fridge','bottle warmer']
+
+
 def load_data(house, path):
     collection = {}
     house_prob = []
