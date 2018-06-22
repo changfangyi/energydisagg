@@ -111,7 +111,7 @@ def load_config():
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge','television']
     elif APPLIANCES == 'FW':
-        HOUSES = config_module.FT
+        HOUSES = config_module.FW
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge','washing machine']
         
