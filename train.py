@@ -13,8 +13,8 @@ from datetime import timedelta
 from time import strftime
 
 # Configuration
-#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 APPLIANCES = None
 CHANNELS = None
 HOUSES = None
@@ -96,7 +96,7 @@ def parse_args():
 
 def load_config():
     global CHANNELS, HOUSES 
-    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'train', __name__)
+    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'config', __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
         HOUSES = HOUSES['house']
