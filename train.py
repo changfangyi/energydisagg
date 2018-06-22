@@ -13,8 +13,8 @@ from datetime import timedelta
 from time import strftime
 
 # Configuration
-PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 APPLIANCES = None
 CHANNELS = None
 HOUSES = None
@@ -46,7 +46,7 @@ def main():
 
         train_metrics = model.train_on_batch(x=main,y=[targets[CHANNELS[1]], targets[CHANNELS[2]]]) 
 
-        if i % 100 == 0:
+        if i % 1000 == 0:
             print('Step : {} , Time : {}\n'.format(i,strftime('%Y-%m-%d_%H_%M')))
             #for i, metrics_name in enumerate(model.metrics_names):
             #    print('{}={:.2f}, '.format(metrics_name, train_metrics[i]))
