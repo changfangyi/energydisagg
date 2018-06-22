@@ -32,7 +32,6 @@ def main():
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
     syn_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
-
     topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + 'multi_CLDNN', __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
     for i in range(NUM_STEPS):
@@ -115,7 +114,6 @@ def load_config():
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge','washing machine']
         
-
 def load_data(house, path):
     collection = {}
     house_prob = []
