@@ -102,7 +102,19 @@ def load_config():
         HOUSES = config_module.FB
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge','bottle warmer']
-
+    elif APPLIANCES == 'FA':
+        HOUSES = config_module.FA
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','fridge','air conditioner']
+    elif APPLIANCES == 'FT':
+        HOUSES = config_module.FT
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','fridge','television']
+    elif APPLIANCES == 'FW':
+        HOUSES = config_module.FT
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','fridge','washing machine']
+        
 
 def load_data(house, path):
     collection = {}
