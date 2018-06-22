@@ -59,16 +59,16 @@ def main():
                         print(metrics_name, ': {:.2f}'.format(value))
                 print('\n')
 
-            print('Random Guess :')
-            for item, channel in enumerate(CHANNELS[1:]):
-                print(channel, ':')
-                metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
-                target_dim = len(targets[channel].flatten())
-                scores = metrics.compute_metrics(np.zeros(target_dim), targets[channel].flatten())
-                for valid_type, score in scores.iteritems():
-                    for metrics_name, value in score.iteritems():
-                        print(metrics_name, ': {:.2f}'.format(value))
-                print('\n')
+            #print('Random Guess :')
+            #for item, channel in enumerate(CHANNELS[1:]):
+            #    print(channel, ':')
+            #    metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
+            #    target_dim = len(targets[channel].flatten())
+            #    scores = metrics.compute_metrics(np.zeros(target_dim), targets[channel].flatten())
+            #    for valid_type, score in scores.iteritems():
+            #        for metrics_name, value in score.iteritems():
+            #            print(metrics_name, ': {:.2f}'.format(value))
+            #    print('\n')
 
 
     model_name = strftime('%Y%m%d_%H')
