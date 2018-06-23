@@ -17,6 +17,7 @@ from time import strftime
 PATH = '/Users/kang/Desktop/energydisagg' # multi_group
 #PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 APPLIANCES = None
+MODEL = None
 CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
@@ -34,7 +35,7 @@ def main():
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
     syn_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
-    topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + 'multi_CLDNN', __name__)
+    topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + MODEL, __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
 
     for i in range(NUM_STEPS):
@@ -56,14 +57,14 @@ def main():
             validate._plot(os.path.join(PATH, 'fig'))
             validate._model_guess()
 
-    model_name = strftime('%Y%m%d_%H')
+    model_name = strftime('%Y%m%d_%H') + '_' + str(MODEL)
     for item in CHANNELS[1:]:
         model_name = model_name + '_' + item
-    print('Saving model ', model_name, '.h5')
-    model.save(os.path.join(PATH, 'models', 'config_' + model_name + '.h5'))
+    print('Saving model',  model_name, '.h5')
+    model.save(os.path.join(PATH, 'models', model_name + '.h5'))
 
 def parse_args():
-    global APPLIANCES, NUM_STEPS, SINGLE
+    global APPLIANCES, NUM_STEPS, SINGLE, MODEL
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -73,6 +74,9 @@ def parse_args():
     required_named_arguments.add_argument('-t', '--num-steps',
                                           help='Number of steps.',
                                           type=int,
+                                          required=True)
+    required_named_arguments.add_argument('-m', '--model',
+                                          help='model name',
                                           required=True)
     # optional
     optional_named_arguments = parser.add_argument_group('optional named arguments')
@@ -84,6 +88,7 @@ def parse_args():
     APPLIANCES = args.appliancess
     NUM_STEPS = args.num_steps
     SINGLE = args.single
+    MODEL = args.model
 
 def load_config():
     global CHANNELS, HOUSES 
