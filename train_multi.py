@@ -53,8 +53,8 @@ def main():
             for item, channel in enumerate(CHANNELS[1:]):
                 print(channel, ':')
                 metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
-		scores = metrics.compute_metrics(prediction.flatten(), targets[channel].flatten())
-                #scores = metrics.compute_metrics(prediction[item].flatten(), targets[channel].flatten())
+		#scores = metrics.compute_metrics(prediction.flatten(), targets[channel].flatten())
+                scores = metrics.compute_metrics(prediction[item].flatten(), targets[channel].flatten())
                 for __, score in scores.iteritems():
                     for metrics_name, value in score.iteritems():
                         print(metrics_name, ': {:.2f}'.format(value))
