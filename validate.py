@@ -9,13 +9,14 @@ from dataprocess.validation import Validation
 from keras.models import load_model
 from train import load_data
 
-#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 MODEL = None
 APPLIANCES = None
 CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
+SINGLE = None
 FREQ_REAL_SYN = 2
 
 def main():
@@ -31,14 +32,14 @@ def main():
     while main is None or targets is None:
         main, targets = real_source._get_batch()
     # validate
-    validate = Validation(main, targets, model, CHANNELS)
-    validate._zeros_guess
-    validate._model_guess
+    validate = Validation(main, targets, model, CHANNELS, SINGLE)
+    print(validate._zeros_guess())
+    print(validate._model_guess())
     validate._plot(os.path.join(PATH, 'fig'))
 
 
 def parse_args():
-    global APPLIANCES, MODEL
+    global APPLIANCES, MODEL, SINGLE
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -48,10 +49,16 @@ def parse_args():
     required_named_arguments.add_argument('-m', '--model',
                                           help='model name',
                                           required=True)
+    # optional
+    optional_named_arguments = parser.add_argument_group('optional named arguments')
+    optional_named_arguments.add_argument('-s', '--single',
+                                          help='Flag to perform a single task',
+                                          action='store_true')
      # start parsing
     args = parser.parse_args()
     APPLIANCES = args.appliancess
     MODEL = args.model
+    SINGLE = args.single
 
 def load_config():
     global CHANNELS, HOUSES 

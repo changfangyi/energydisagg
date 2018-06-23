@@ -12,11 +12,12 @@ from keras.models import load_model
 
 
 class Validation(object):
-    def __init__(self, main, targets, model, channels):
+    def __init__(self, main, targets, model, channels, single=False):
         self.main = main
         self.targets = targets
         self.model = model
         self.channels = channels
+        self.single = single
 
     def _inference(self):
         return self.model.predict_on_batch(self.main)
@@ -39,10 +40,13 @@ class Validation(object):
     def _model_guess(self):
         print('Model Guess :')
         model_guess_score = {}
-        for item, channel in self.targets.iteritems():
+        for item, channel in enumerate(self.channels[1:]):
             print(channel, ':')
             metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
-            scores = metrics.compute_metrics(self._inference()[item].flatten(), self.targets[channel].flatten())
+            if not self.single:
+                scores = metrics.compute_metrics(self._inference()[item].flatten(), self.targets[channel].flatten())
+            else:
+                scores = metrics.compute_metrics(self._inference().flatten(), self.targets[channel].flatten())
             model_guess_score[channel]=scores
             for __, score in scores.iteritems():
                 for metrics_name, value in score.iteritems():
@@ -62,7 +66,10 @@ class Validation(object):
                 p3.set_title('Prediction #{}'.format(sample_no + 1))
                 p1.plot(self.main[sample_no].flatten())
                 p2.plot(self.targets[channel][sample_no].flatten())
-                p3.plot(self._inference()[item][sample_no].flatten())
+                if not self.single:
+                    p3.plot(self._inference()[item][sample_no].flatten())
+                else:
+                    p3.plot(self._inference()[sample_no].flatten())
                 plt.savefig(os.path.join(savefolder, channel, 'Step_{}.png'.format(sample_no + 1)))
                 plt.clf()
         

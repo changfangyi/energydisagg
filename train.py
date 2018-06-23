@@ -8,17 +8,19 @@ import numpy as np
 import pandas as pd
 from dataprocess.source import RealSource
 from dataprocess.source import SynSource
+from dataprocess.validation import Validation
 from metrics import Metrics
 from datetime import timedelta
 from time import strftime
 
 # Configuration
-#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 APPLIANCES = None
 CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
+SINGLE = None
 FREQ_REAL_SYN = 2
 
 def main():
@@ -34,6 +36,7 @@ def main():
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
     topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + 'multi_CLDNN', __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
+
     for i in range(NUM_STEPS):
         if i % FREQ_REAL_SYN == 0:
             main, targets = real_source._get_batch()
@@ -48,17 +51,11 @@ def main():
 
         if i % 1000 == 0:
             print('Step : {} , Time : {}\n'.format(i,strftime('%Y-%m-%d_%H_%M')))
-            prediction = model.predict_on_batch(main)
             print('Inference Guess :')
-            for item, channel in enumerate(CHANNELS[1:]):
-                print(channel, ':')
-                metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
-		scores = metrics.compute_metrics(prediction.flatten(), targets[channel].flatten())
-                #scores = metrics.compute_metrics(prediction[item].flatten(), targets[channel].flatten())
-                for __, score in scores.iteritems():
-                    for metrics_name, value in score.iteritems():
-                        print(metrics_name, ': {:.2f}'.format(value))
-                print('\n')
+            validate = Validation(main, targets, model, CHANNELS, SINGLE)
+            validate._plot(os.path.join(PATH, 'fig'))
+            validate._model_guess()
+
     model_name = strftime('%Y%m%d_%H')
     for item in CHANNELS[1:]:
         model_name = model_name + '_' + item
@@ -66,7 +63,7 @@ def main():
     model.save(os.path.join(PATH, 'models', 'config_' + model_name + '.h5'))
 
 def parse_args():
-    global APPLIANCES, NUM_STEPS
+    global APPLIANCES, NUM_STEPS, SINGLE
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -77,10 +74,16 @@ def parse_args():
                                           help='Number of steps.',
                                           type=int,
                                           required=True)
+    # optional
+    optional_named_arguments = parser.add_argument_group('optional named arguments')
+    optional_named_arguments.add_argument('-s', '--single',
+                                          help='Flag to perform a single task',
+                                          action='store_true')
      # start parsing
     args = parser.parse_args()
     APPLIANCES = args.appliancess
     NUM_STEPS = args.num_steps
+    SINGLE = args.single
 
 def load_config():
     global CHANNELS, HOUSES 
