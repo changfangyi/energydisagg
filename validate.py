@@ -9,8 +9,8 @@ from dataprocess.validation import Validation
 from keras.models import load_model
 from train import load_data
 
-PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 MODEL = None
 APPLIANCES = None
 CHANNELS = None
@@ -79,6 +79,26 @@ def load_config():
         HOUSES = config_module.FW
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge','washing machine']
+    elif APPLIANCES == 'F':
+        HOUSES = config_module.F
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','fridge']
+    elif APPLIANCES == 'B':
+        HOUSES = config_module.B
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','bottle warmer']
+    elif APPLIANCES == 'A':
+        HOUSES = config_module.A
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','air conditioner']
+    elif APPLIANCES == 'T':
+        HOUSES = config_module.T
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','televivion']
+    elif APPLIANCES == 'W':
+        HOUSES = config_module.W
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','washing machine']
 
 if __name__ == '__main__':
     main()

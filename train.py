@@ -14,8 +14,8 @@ from datetime import timedelta
 from time import strftime
 
 # Configuration
-PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-#PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
+PATH = '/home/nilm/Desktop/energydisagg' # multi_group
 APPLIANCES = None
 MODEL = None
 CHANNELS = None
@@ -113,6 +113,22 @@ def load_config():
         HOUSES = config_module.F
         HOUSES = HOUSES['house']
         CHANNELS = ['main','fridge']
+    elif APPLIANCES == 'B':
+        HOUSES = config_module.B
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','bottle warmer']
+    elif APPLIANCES == 'A':
+        HOUSES = config_module.A
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','air conditioner']
+    elif APPLIANCES == 'T':
+        HOUSES = config_module.T
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','television']
+    elif APPLIANCES == 'W':
+        HOUSES = config_module.W
+        HOUSES = HOUSES['house']
+        CHANNELS = ['main','washing machine']
         
 def load_data(house, path):
     collection = {}
