@@ -301,4 +301,23 @@ def reindex_by_reporttime_extract_w(table, resample='1min'):
     result = result[['w']]            
     return result
 
+def load_data(house, path):
+    collection = {}
+    house_prob = []
+    activation_prob = {}
+    for item in sorted(house):
+        pathfile = os.path.join(path, str(item))
+        activation_counts= []
+        activation_collection = {}
+        activations = os.listdir(pathfile)
+        for activation in activations:
+            activation_data = pd.read_csv(pathfile + '/' + activation, index_col=0)           
+            activation_counts.append(len(activation_data))
+            activation_collection[str(activation[:-15])] = activation_data
+        house_prob.append(sum(activation_counts))
+        collection['house_'+str(item)] =  activation_collection
+        activation_prob['house_'+ str(item)] = [i/sum(activation_counts) for i in activation_counts]
+    house_prob = [i/sum(house_prob) for i in house_prob]
+    return collection, house_prob, activation_prob
+
 

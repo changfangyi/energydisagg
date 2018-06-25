@@ -7,7 +7,7 @@ import importlib
 from dataprocess.source import RealSource
 from dataprocess.validation import Validation
 from keras.models import load_model
-from train import load_data
+from dataprocess.table_process import load_data
 
 #PATH = '/Users/kang/Desktop/energydisagg' # multi_group
 PATH = '/home/nilm/Desktop/energydisagg' # multi_group
@@ -65,23 +65,23 @@ def load_config():
     config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'config', __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge','bottle warmer']
     elif APPLIANCES == 'FA':
         HOUSES = config_module.FA
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge','air conditioner']
     elif APPLIANCES == 'FT':
         HOUSES = config_module.FT
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge','television']
     elif APPLIANCES == 'FW':
         HOUSES = config_module.FW
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge','washing machine']
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge']
     elif APPLIANCES == 'B':
         HOUSES = config_module.B
@@ -89,15 +89,15 @@ def load_config():
         CHANNELS = ['main','bottle warmer']
     elif APPLIANCES == 'A':
         HOUSES = config_module.A
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','air conditioner']
     elif APPLIANCES == 'T':
         HOUSES = config_module.T
-        HOUSES = HOUSES['house']
-        CHANNELS = ['main','televivion']
+        HOUSES = HOUSES['valid']['house']
+        CHANNELS = ['main','television']
     elif APPLIANCES == 'W':
         HOUSES = config_module.W
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','washing machine']
 
 if __name__ == '__main__':

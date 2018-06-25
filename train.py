@@ -9,6 +9,7 @@ import pandas as pd
 from dataprocess.source import RealSource
 from dataprocess.source import SynSource
 from dataprocess.validation import Validation
+from dataprocess.table_process import load_data
 from metrics import Metrics
 from datetime import timedelta
 from time import strftime
@@ -95,59 +96,40 @@ def load_config():
     config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'config', __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','bottle warmer']
     elif APPLIANCES == 'FA':
         HOUSES = config_module.FA
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','air conditioner']
     elif APPLIANCES == 'FT':
         HOUSES = config_module.FT
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','television']
     elif APPLIANCES == 'FW':
         HOUSES = config_module.FW
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','washing machine']
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge']
     elif APPLIANCES == 'B':
         HOUSES = config_module.B
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','bottle warmer']
     elif APPLIANCES == 'A':
         HOUSES = config_module.A
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','air conditioner']
     elif APPLIANCES == 'T':
         HOUSES = config_module.T
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','television']
     elif APPLIANCES == 'W':
         HOUSES = config_module.W
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','washing machine']
-        
-def load_data(house, path):
-    collection = {}
-    house_prob = []
-    activation_prob = {}
-    for item in sorted(house):
-        pathfile = os.path.join(path, str(item))
-        activation_counts= []
-        activation_collection = {}
-        activations = os.listdir(pathfile)
-        for activation in activations:
-            activation_data = pd.read_csv(pathfile + '/' + activation, index_col=0)           
-            activation_counts.append(len(activation_data))
-            activation_collection[str(activation[:-15])] = activation_data
-        house_prob.append(sum(activation_counts))
-        collection['house_'+str(item)] =  activation_collection
-        activation_prob['house_'+ str(item)] = [i/sum(activation_counts) for i in activation_counts]
-    house_prob = [i/sum(house_prob) for i in house_prob]
-    return collection, house_prob, activation_prob
 
 if __name__ == '__main__':
     main()
