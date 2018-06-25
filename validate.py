@@ -8,6 +8,7 @@ from dataprocess.source import RealSource
 from dataprocess.validation import Validation
 from keras.models import load_model
 from dataprocess.table_process import load_data
+#import random
 
 #PATH = '/Users/kang/Desktop/energydisagg' # multi_group
 PATH = '/home/nilm/Desktop/energydisagg' # multi_group
@@ -85,7 +86,7 @@ def load_config():
         CHANNELS = ['main','fridge']
     elif APPLIANCES == 'B':
         HOUSES = config_module.B
-        HOUSES = HOUSES['house']
+        HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','bottle warmer']
     elif APPLIANCES == 'A':
         HOUSES = config_module.A
