@@ -34,8 +34,8 @@ def main():
         main, targets = real_source._get_batch()
     # validate
     validate = Validation(main, targets, model, CHANNELS, SINGLE)
-    print(validate._zeros_guess())
-    print(validate._model_guess())
+    validate._zeros_guess()
+    validate._model_guess()
     validate._plot(os.path.join(PATH, 'fig'))
 
 
