@@ -95,7 +95,7 @@ class RealSource(object):
         while not success_for_large_length:
             max_iter_success_for_large_length +=1
             select_start = get_seq_before_check.sample(n=1).index[0]
-            end = select_start + timedelta(seconds = 60*self.seq_length*2) 
+            end = select_start + timedelta(seconds = 60*self.seq_length*24) 
             if len(get_seq_before_check[select_start:end])>=self.seq_length or max_iter_success_for_large_length == 32:
                 success_for_large_length = True
                 get_seq_after_check = get_seq_before_check[select_start:end]

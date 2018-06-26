@@ -23,12 +23,13 @@ CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
 SINGLE = None
+DATA = None
 FREQ_REAL_SYN = 2
 
 def main():
     os.chdir(PATH)
-    data_path = os.path.join(PATH, 'data', 'multi_group')
     parse_args()
+    data_path = os.path.join(PATH, 'data', DATA)
     load_config()
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, data_path)
     print('Get Batch for Training:')
@@ -58,14 +59,14 @@ def main():
             validate._plot(os.path.join(PATH, 'fig'))
             validate._model_guess()
 
-    model_name = strftime('%Y%m%d_%H') + '_' + str(MODEL)
+    model_name = str(DATA) + '_' + strftime('%Y%m%d_%H') + '_' + str(MODEL)
     for item in CHANNELS[1:]:
         model_name = model_name + '_' + item
     print('Saving model',  model_name, '.h5')
     model.save(os.path.join(PATH, 'models', model_name + '.h5'))
 
 def parse_args():
-    global APPLIANCES, NUM_STEPS, SINGLE, MODEL
+    global APPLIANCES, NUM_STEPS, SINGLE, MODEL, DATA
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -75,6 +76,9 @@ def parse_args():
     required_named_arguments.add_argument('-t', '--num-steps',
                                           help='Number of steps.',
                                           type=int,
+                                          required=True)
+    required_named_arguments.add_argument('-d', '--data',
+                                          help='data name',
                                           required=True)
     required_named_arguments.add_argument('-m', '--model',
                                           help='model name',
@@ -90,10 +94,11 @@ def parse_args():
     NUM_STEPS = args.num_steps
     SINGLE = args.single
     MODEL = args.model
+    DATA = args.data
 
 def load_config():
     global CHANNELS, HOUSES 
-    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'config', __name__)
+    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + DATA, __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
         HOUSES = HOUSES['train']['house']
@@ -110,6 +115,18 @@ def load_config():
         HOUSES = config_module.FW
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','washing machine']
+    elif APPLIANCES == 'MK':
+        HOUSES = config_module.MK
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','kettle']
+    elif APPLIANCES == 'MD':
+        HOUSES = config_module.MD
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','dishwasher']
+    elif APPLIANCES == 'MW':
+        HOUSES = config_module.MW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','washing_machine']
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
         HOUSES = HOUSES['train']['house']
@@ -130,6 +147,14 @@ def load_config():
         HOUSES = config_module.W
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','washing machine']
+    elif APPLIANCES == 'M':
+        HOUSES = config_module.M
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave']
+    elif APPLIANCES == 'K':
+        HOUSES = config_module.K
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','kettle']
 
 if __name__ == '__main__':
     main()

@@ -18,6 +18,7 @@ CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
 SINGLE = None
+DATA = None
 FREQ_REAL_SYN = 2
 
 def main():
@@ -26,7 +27,7 @@ def main():
     load_config()
     model = os.path.join(PATH, 'models', MODEL + '.h5')
     model = load_model(model)
-    data_to_memory, house_prob, activation_prob = load_data(HOUSES, os.path.join(PATH, 'data', 'multi_group'))
+    data_to_memory, house_prob, activation_prob = load_data(HOUSES, os.path.join(PATH, 'data', DATA))
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
     main, targets = real_source._get_batch()
@@ -40,12 +41,15 @@ def main():
 
 
 def parse_args():
-    global APPLIANCES, MODEL, SINGLE
+    global APPLIANCES, MODEL, SINGLE, DATA
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
     required_named_arguments.add_argument('-a', '--appliancess',
                                           help='FB fridge and bottle warmer',
+                                          required=True)
+    required_named_arguments.add_argument('-d', '--data',
+                                          help='data name',
                                           required=True)
     required_named_arguments.add_argument('-m', '--model',
                                           help='model name',
@@ -60,10 +64,11 @@ def parse_args():
     APPLIANCES = args.appliancess
     MODEL = args.model
     SINGLE = args.single
+    DATA = args.data
 
 def load_config():
     global CHANNELS, HOUSES 
-    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + 'config', __name__)
+    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + DATA, __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
         HOUSES = HOUSES['valid']['house']
@@ -80,6 +85,14 @@ def load_config():
         HOUSES = config_module.FW
         HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','fridge','washing machine']
+    elif APPLIANCES == 'MK':
+        HOUSES = config_module.MK
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','kettle']
+    elif APPLIANCES == 'MD':
+        HOUSES = config_module.MD
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','dishwasher']
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
         HOUSES = HOUSES['valid']['house']
@@ -100,6 +113,19 @@ def load_config():
         HOUSES = config_module.W
         HOUSES = HOUSES['valid']['house']
         CHANNELS = ['main','washing machine']
+    elif APPLIANCES == 'K':
+        HOUSES = config_module.K
+        HOUSES = HOUSES['valid']['house']
+        CHANNELS = ['main','kettle']
+    elif APPLIANCES == 'M':
+        HOUSES = config_module.M
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave']
+    elif APPLIANCES == 'K':
+        HOUSES = config_module.K
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','kettle']
+
 
 if __name__ == '__main__':
     main()
