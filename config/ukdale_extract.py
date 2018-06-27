@@ -13,6 +13,15 @@ MW = {  'train':{ 'house':[1,2] },
 FW = {  'train':{ 'house':[1] },
 	'valid':{'house': [2] } }
 
+FK = {  'train':{ 'house':[1] },
+	'valid':{'house': [5] } }
+
+FM = {  'train':{ 'house':[1] },
+	'valid':{'house': [5] } }
+
+FD = {  'train':{ 'house':[1] },
+	'valid':{'house': [5] } }
+
 DW = {  'train':{ 'house':[1, 2] },
 	'valid':{'house': [5] } }
 

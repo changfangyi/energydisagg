@@ -71,20 +71,36 @@ def load_config():
     config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + DATA, __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','bottle warmer']
     elif APPLIANCES == 'FA':
         HOUSES = config_module.FA
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','air conditioner']
     elif APPLIANCES == 'FT':
         HOUSES = config_module.FT
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','television']
     elif APPLIANCES == 'FW':
         HOUSES = config_module.FW
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','washing machine']
+    elif APPLIANCES == 'FK':
+        HOUSES = config_module.FK
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','kettle']
+    elif APPLIANCES == 'FM':
+        HOUSES = config_module.FM
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','microwave']
+    elif APPLIANCES == 'FD':
+        HOUSES = config_module.FD
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','dish washer']
+    elif APPLIANCES == 'DW':
+        HOUSES = config_module.DW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','dish washer','washing machine']
     elif APPLIANCES == 'MK':
         HOUSES = config_module.MK
         HOUSES = HOUSES['train']['house']
@@ -93,30 +109,31 @@ def load_config():
         HOUSES = config_module.MD
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','microwave','dishwasher']
+    elif APPLIANCES == 'MW':
+        HOUSES = config_module.MW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','microwave','washing machine']
+
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge']
     elif APPLIANCES == 'B':
         HOUSES = config_module.B
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','bottle warmer']
     elif APPLIANCES == 'A':
         HOUSES = config_module.A
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','air conditioner']
     elif APPLIANCES == 'T':
         HOUSES = config_module.T
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','television']
     elif APPLIANCES == 'W':
         HOUSES = config_module.W
-        HOUSES = HOUSES['valid']['house']
+        HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','washing machine']
-    elif APPLIANCES == 'K':
-        HOUSES = config_module.K
-        HOUSES = HOUSES['valid']['house']
-        CHANNELS = ['main','kettle']
     elif APPLIANCES == 'M':
         HOUSES = config_module.M
         HOUSES = HOUSES['train']['house']
@@ -125,6 +142,10 @@ def load_config():
         HOUSES = config_module.K
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','kettle']
+    elif APPLIANCES == 'D':
+        HOUSES = config_module.D
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','dish washer']
 
 
 if __name__ == '__main__':
