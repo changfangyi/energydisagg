@@ -16,6 +16,12 @@ FW = {  'train':{ 'house':[1] },
 FK = {  'train':{ 'house':[1] },
 	'valid':{'house': [5] } }
 
+KD = {  'train':{ 'house':[1] },
+	'valid':{'house': [5] } }
+
+KW = {  'train':{ 'house':[1] },
+	'valid':{'house': [5] } }
+
 FM = {  'train':{ 'house':[1] },
 	'valid':{'house': [5] } }
 

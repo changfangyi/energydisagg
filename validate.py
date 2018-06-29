@@ -97,6 +97,18 @@ def load_config():
         HOUSES = config_module.FD
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','dish washer']
+    elif APPLIANCES == 'BW':
+        HOUSES = config_module.BW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','bottle warmer','washing machine']
+    elif APPLIANCES == 'BT':
+        HOUSES = config_module.BT
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','bottle warmer','television']
+    elif APPLIANCES == 'FTB':
+        HOUSES = config_module.FTB
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','television', 'bottle warmer']
     elif APPLIANCES == 'DW':
         HOUSES = config_module.DW
         HOUSES = HOUSES['train']['house']
@@ -108,11 +120,29 @@ def load_config():
     elif APPLIANCES == 'MD':
         HOUSES = config_module.MD
         HOUSES = HOUSES['train']['house']
-        CHANNELS = ['main','microwave','dishwasher']
+        CHANNELS = ['main','microwave','dish washer']
     elif APPLIANCES == 'MW':
         HOUSES = config_module.MW
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','microwave','washing machine']
+
+    elif APPLIANCES == 'TW':
+        HOUSES = config_module.TW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','television', 'washing machine']
+    elif APPLIANCES == 'TA':
+        HOUSES = config_module.TA
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','television','air conditioner']
+    elif APPLIANCES == 'WA':
+        HOUSES = config_module.WA
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','washing machine','air conditioner']
+
+    elif APPLIANCES == 'KW':
+        HOUSES = config_module.KW
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','kettle','washing machine']
 
     elif APPLIANCES == 'F':
         HOUSES = config_module.F
