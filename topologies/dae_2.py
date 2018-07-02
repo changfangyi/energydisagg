@@ -25,9 +25,9 @@ def build_model(input_shape, appliances):
     # dense
     dense_1 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='linear')(conv_2)
     dense_2 = Dense(units=128, activation='linear')(dense_1)
-    dense_3 = Dense(units=128, activation='linear')(dense_2)
-    dense_4 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='relu')(dense_3)
-    dense_4 = Reshape(target_shape=(seq_length, MODEL_CONV_FILTERS))(dense_4)
+    dense_3 = Dense(units=64, activation='linear')(dense_2)
+    dense_4 = Dense(units=seq_length*2, activation='relu')(dense_3)
+    dense_4 = Reshape(target_shape=(seq_length, 2))(dense_4)
     # Initialization
     outputs_disaggregation = []
     for appliance in appliances:

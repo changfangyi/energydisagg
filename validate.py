@@ -27,6 +27,7 @@ def main():
     load_config()
     model = os.path.join(PATH, 'models', MODEL + '.h5')
     model = load_model(model)
+    print(model.summary())
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, os.path.join(PATH, 'data', DATA))
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
