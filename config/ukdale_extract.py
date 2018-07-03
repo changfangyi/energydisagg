@@ -32,7 +32,7 @@ DW = {  'train':{ 'house':[1, 2] },
 	'valid':{'house': [5] } }
 
 F = {  'train':{ 'house':[1] },
-	'valid':{'house': [2] } }
+	'valid':{'house': [5] } }
 
 M = {  'train':{ 'house':[1, 2 ] },
 	'valid':{'house': [5] } }

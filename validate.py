@@ -118,6 +118,10 @@ def load_config():
         HOUSES = config_module.MK
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','microwave','kettle']
+    elif APPLIANCES == 'KD':
+        HOUSES = config_module.KD
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','kettle','dish washer']
     elif APPLIANCES == 'MD':
         HOUSES = config_module.MD
         HOUSES = HOUSES['train']['house']
@@ -126,6 +130,10 @@ def load_config():
         HOUSES = config_module.MW
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','microwave','washing machine']
+    elif APPLIANCES == 'KD':
+        HOUSES = config_module.KD
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','kettle','dish washer']
 
     elif APPLIANCES == 'TW':
         HOUSES = config_module.TW
