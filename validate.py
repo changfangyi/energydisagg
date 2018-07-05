@@ -147,7 +147,14 @@ def load_config():
         HOUSES = config_module.WA
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','washing machine','air conditioner']
-
+    elif APPLIANCES == 'FTB':
+        HOUSES = config_module.FTB
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','television', 'bottle warmer']
+    elif APPLIANCES == 'FTBWA':
+        HOUSES = config_module.FTBWA
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','fridge','television', 'bottle warmer','washing machine','air conditioner']
     elif APPLIANCES == 'KW':
         HOUSES = config_module.KW
         HOUSES = HOUSES['train']['house']

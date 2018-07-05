@@ -1,17 +1,23 @@
 """ Config for the REDD dataset """
 
 # training
+FTB = {  'train':{ 'house':[ 19, 41] },
+	'valid':{'house': [39] } }
+
+FTBWA = {  'train':{ 'house':[5, 19] },
+	'valid':{'house': [39] } }
+
 FB = {  'train':{ 'house':[1, 14, 19, 28, 41, 51] },
 	'valid':{'house': [39] } }
 
 FA = {  'train':{ 'house':[14, 19, 28, 41, 51] },
-	'valid':{'house': [2] } }
-
-FT = {  'train':{ 'house':[1, 19, 41] },
 	'valid':{'house': [39] } }
 
-FW = {  'train':{ 'house':[14, 19] },
+FT = {  'train':{ 'house':[1, 19, 41] },
 	'valid':{'house': [2] } }
+
+FW = {  'train':{ 'house':[14, 19] },
+	'valid':{'house': [5] } }
 
 BW = {  'train':{ 'house':[14, 19] },
 	'valid':{'house': [2] } }
@@ -20,7 +26,7 @@ BT = {  'train':{ 'house':[1, 19, 41] },
 	'valid':{'house': [2] } }
 
 BT = {  'train':{ 'house':[1, 19, 41] },
-	'valid':{'house': [2] } }
+	'valid':{'house': [39] } }
 
 WA = {  'train':{ 'house':[14, 19] },
 	'valid':{'house': [39] } }
@@ -45,7 +51,7 @@ T = {  'train':{ 'house':[1, 19, 41, 45, 50, 53, 55] },
 	'valid':{'house': [2, 5, 39] } }
 
 W = {  'train':{ 'house':[14, 19] },
-	'valid':{'house': [5] } }
+	'valid':{'house': [39] } }
 
 
 
