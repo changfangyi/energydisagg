@@ -78,6 +78,10 @@ def load_config():
         HOUSES = config_module.FA
         HOUSES = HOUSES['train']['house']
         CHANNELS = ['main','fridge','air conditioner']
+    elif APPLIANCES == 'AB':
+        HOUSES = config_module.AB
+        HOUSES = HOUSES['train']['house']
+        CHANNELS = ['main','air conditioner','bottle warmer']
     elif APPLIANCES == 'FT':
         HOUSES = config_module.FT
         HOUSES = HOUSES['train']['house']
