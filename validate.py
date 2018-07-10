@@ -8,23 +8,23 @@ from dataprocess.source import RealSource
 from dataprocess.validation import Validation
 from keras.models import load_model
 from dataprocess.table_process import load_data
-#import random
 
-#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+PATH = os.path.join(os.path.expanduser('~') , 'Desktop', 'energydisagg')
 MODEL = None
 APPLIANCES = None
 CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
-SINGLE = None
 DATA = None
 FREQ_REAL_SYN = 2
 
 def main():
+    SINGLE = False
     os.chdir(PATH)
     parse_args()
     load_config()
+    if len(CHANNELS) == 1+1 :
+	SINGLE = True
     model = os.path.join(PATH, 'models', MODEL + '.h5')
     model = load_model(model)
     print(model.summary())
@@ -42,7 +42,7 @@ def main():
 
 
 def parse_args():
-    global APPLIANCES, MODEL, SINGLE, DATA
+    global APPLIANCES, MODEL, DATA
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -55,16 +55,10 @@ def parse_args():
     required_named_arguments.add_argument('-m', '--model',
                                           help='model name',
                                           required=True)
-    # optional
-    optional_named_arguments = parser.add_argument_group('optional named arguments')
-    optional_named_arguments.add_argument('-s', '--single',
-                                          help='Flag to perform a single task',
-                                          action='store_true')
      # start parsing
     args = parser.parse_args()
     APPLIANCES = args.appliancess
     MODEL = args.model
-    SINGLE = args.single
     DATA = args.data
 
 def load_config():

@@ -25,9 +25,9 @@ class Validation(object):
     def _zeros_guess(self):
         print('Zeros Guess:')
         zeros_guess_score = {}
-        for channel, values in self.targets.iteritems():
+        for item, channel in enumerate(self.channels[1:]):
             print(channel, ':')
-            target_length = len(values.flatten())
+            target_length = len(self.targets[channel].flatten())
             metrics = Metrics(state_boundaries=[15], clip_to_zero=True)
             scores = metrics.compute_metrics(np.zeros(target_length), self.targets[channel].flatten())
             zeros_guess_score[channel]=scores

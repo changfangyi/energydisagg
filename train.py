@@ -14,23 +14,24 @@ from metrics import Metrics
 from datetime import timedelta
 from time import strftime
 
-# Configuration
-#PATH = '/Users/kang/Desktop/energydisagg' # multi_group
-PATH = '/home/nilm/Desktop/energydisagg' # multi_group
+PATH = os.path.join(os.path.expanduser('~') , 'Desktop', 'energydisagg')
 APPLIANCES = None
 MODEL = None
 CHANNELS = None
 HOUSES = None
 NUM_STEPS = None
-SINGLE = None
 DATA = None
 FREQ_REAL_SYN = 2
 
 def main():
+    SINGLE = False
     os.chdir(PATH)
     parse_args()
     data_path = os.path.join(PATH, 'data', DATA)
     load_config()
+    if len(CHANNELS) == 1+1 :
+	SINGLE = True
+
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, data_path)
     print('Get Batch for Training:')
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
@@ -66,7 +67,7 @@ def main():
     model.save(os.path.join(PATH, 'models', model_name + '.h5'))
 
 def parse_args():
-    global APPLIANCES, NUM_STEPS, SINGLE, MODEL, DATA
+    global APPLIANCES, NUM_STEPS, MODEL, DATA
     parser = argparse.ArgumentParser()
      # required
     required_named_arguments = parser.add_argument_group('required named arguments')
@@ -83,22 +84,17 @@ def parse_args():
     required_named_arguments.add_argument('-m', '--model',
                                           help='model name',
                                           required=True)
-    # optional
-    optional_named_arguments = parser.add_argument_group('optional named arguments')
-    optional_named_arguments.add_argument('-s', '--single',
-                                          help='Flag to perform a single task',
-                                          action='store_true')
+ 
      # start parsing
     args = parser.parse_args()
     APPLIANCES = args.appliancess
     NUM_STEPS = args.num_steps
-    SINGLE = args.single
     MODEL = args.model
     DATA = args.data
 
 def load_config():
     global CHANNELS, HOUSES 
-    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + DATA, __name__)
+    config_module = importlib.import_module(dirs.CONFIG_DIR + '.' + DATA , __name__)
     if APPLIANCES == 'FB':
         HOUSES = config_module.FB
         HOUSES = HOUSES['train']['house']

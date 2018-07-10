@@ -4,7 +4,7 @@
 FTB = {  'train':{ 'house':[ 19, 41] },
 	'valid':{'house': [39] } }
 
-FTBWA = {  'train':{ 'house':[5, 19] },
+FTBWA = { 'channels':['main','fridge','television', 'bottle warmer','washing machine','air conditioner'],'train':{ 'house':[5, 19] },
 	'valid':{'house': [39] } }
 
 FB = {  'train':{ 'house':[1, 14, 19, 28, 41, 51] },
