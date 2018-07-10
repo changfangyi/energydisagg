@@ -36,20 +36,20 @@ def main():
     print('Get Batch for Training:')
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
-    #syn_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
-    #                    houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
+    syn_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
+                        houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
     topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + MODEL, __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
 
     for i in range(NUM_STEPS):
-        #if i % FREQ_REAL_SYN == 0:
-        main, targets = real_source._get_batch()
-        while main is None or targets is None:
-            main, targets = real_source._get_batch()
-        #else:
-        #    main, targets = syn_source._get_batch()
-        #    while main is None or targets is None:
-        #        main, targets = syn_source._get_batch()
+        if i % FREQ_REAL_SYN == 0:
+        	main, targets = real_source._get_batch()
+        	while main is None or targets is None:
+            		main, targets = real_source._get_batch()
+        else:
+            main, targets = syn_source._get_batch()
+            while main is None or targets is None:
+                main, targets = syn_source._get_batch()
 
         model.train_on_batch(x=main,y=[targets[CHANNELS[item+1]] for item in range(len(CHANNELS[1:]))]) 
 

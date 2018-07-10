@@ -31,9 +31,9 @@ def main():
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, os.path.join(PATH, 'data', DATA))
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
                         houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
-    main, targets = real_source._get_batch()
+    main, targets = real_source._get_batch(num_seq_per_batch = 160)
     while main is None or targets is None:
-        main, targets = real_source._get_batch()
+        main, targets = real_source._get_batch(num_seq_per_batch = 160)
     # validate
     validate = Validation(main, targets, model, CHANNELS, SINGLE)
     validate._zeros_guess()
