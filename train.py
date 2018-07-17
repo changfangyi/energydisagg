@@ -22,6 +22,7 @@ HOUSES = None
 NUM_STEPS = None
 DATA = None
 FREQ_REAL_SYN = 2
+HOUSES_v = [2,5,39]
 
 def main():
     SINGLE = False
@@ -33,19 +34,23 @@ def main():
 	SINGLE = True
 
     data_to_memory, house_prob, activation_prob = load_data(HOUSES, data_path)
+    data_to_memory_v, house_prob_v, activation_prob_v = load_data(HOUSES_v, data_path)
+    print('Get Batch for validation:')
+    real_source_v = RealSource(data_to_memory = data_to_memory_v, channels = CHANNELS, seq_length=60, 
+                        houses = HOUSES_v, houses_prob  =  [1/len(HOUSES_v) for i in HOUSES_v], activations_prob = activation_prob_v)  	
     print('Get Batch for Training:')
     real_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
-                        houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
+                        houses = HOUSES, houses_prob  = [1/len(HOUSES) for i in HOUSES], activations_prob = activation_prob)
     syn_source = RealSource(data_to_memory = data_to_memory, channels = CHANNELS, seq_length=60, 
-                        houses = HOUSES, houses_prob  = house_prob, activations_prob = activation_prob)
+                        houses = HOUSES, houses_prob  = [1/len(HOUSES) for i in HOUSES], activations_prob = activation_prob)
     topology_module = importlib.import_module(dirs.TOPOLOGIES_DIR + '.' + MODEL, __name__)
     model = topology_module.build_model(input_shape=(60,1), appliances= CHANNELS[1:])
 
     for i in range(NUM_STEPS):
         if i % FREQ_REAL_SYN == 0:
-        	main, targets = real_source._get_batch()
-        	while main is None or targets is None:
-            		main, targets = real_source._get_batch()
+            main, targets = real_source._get_batch()
+            while main is None or targets is None:
+                main, targets = real_source._get_batch()
         else:
             main, targets = syn_source._get_batch()
             while main is None or targets is None:
@@ -59,8 +64,15 @@ def main():
             validate = Validation(main, targets, model, CHANNELS, SINGLE)
             validate._plot(os.path.join(PATH, 'fig'))
             validate._model_guess()
+            print('validation Guess:')
+            main_v, targets_v = real_source_v._get_batch()
+    	    while main_v is None or targets_v is None:
+            	main_v, targets_v = real_source_v._get_batch()   	
+	    validate = Validation(main_v, targets_v, model, CHANNELS, SINGLE)
+            validate._plot(os.path.join(PATH, 'fig','v'))
+            validate._model_guess()
 
-    model_name = str(DATA) + '_' + strftime('%Y%m%d_%H') + '_' + str(MODEL)
+    model_name = str(DATA) + '_' + strftime('%Y%m%d_%H_%M') + '_' + str(MODEL)
     for item in CHANNELS[1:]:
         model_name = model_name + '_' + item
     print('Saving model',  model_name, '.h5')

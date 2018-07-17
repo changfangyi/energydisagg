@@ -18,28 +18,24 @@ def build_model(input_shape, appliances):
     x = Input(shape=input_shape)
     # conv
     conv_1 = Conv1D(filters=MODEL_CONV_FILTERS, kernel_size=MODEL_CONV_KERNEL_SIZE, padding=MODEL_CONV_PADDING,activation='linear')(x)
-    conv_2 = Conv1D(filters=8, kernel_size=2, padding=MODEL_CONV_PADDING, activation='linear')(conv_1)
-
+    conv_2 = Conv1D(filters=MODEL_CONV_FILTERS, kernel_size=MODEL_CONV_KERNEL_SIZE, padding=MODEL_CONV_PADDING,activation='linear')(conv_1)
     # reshape
     conv_2 = Flatten()(conv_2)
+    dense_1 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='relu')(conv_1)
+    #dense_2 = Dense(units=256, activation='relu')(dense_1)
+    #dense_3 = Dense(units=128, activation='relu')(dense_2)
     # dense
     # Initialization
     outputs_disaggregation = []
     for appliance in appliances:
-	dense_1 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='relu')(conv_2)
-    	dense_2 = Dense(units=128, activation='relu')(dense_1)
-	dense_3 = Dense(units=64, activation='relu')(dense_2)
-    	dense_4 = Dense(units=128, activation='relu')(dense_3)
-    	dense_5 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='relu')(dense_4)
-    	dense_5 = Reshape(target_shape=(seq_length, MODEL_CONV_FILTERS))(dense_5)
-        conv_3 = Conv1D(filters=8,
-                     kernel_size=MODEL_CONV_KERNEL_SIZE,
-                     strides=MODEL_CONV_STRIDES,
-                     padding=MODEL_CONV_PADDING, activation='linear')(dense_5)
+	#dense_4 = Dense(units=128, activation='relu')(dense_3)
+    	#dense_5 = Dense(units=256, activation='relu')(dense_4)
+    	dense_2 = Dense(units=seq_length*MODEL_CONV_FILTERS, activation='relu')(dense_1)
+    	#dense_2 = Reshape(target_shape=(seq_length, MODEL_CONV_FILTERS))(dense_2)
 	outputs_disaggregation.append(Conv1D(filters=1,
                      kernel_size=MODEL_CONV_KERNEL_SIZE,
                      strides=MODEL_CONV_STRIDES,
-                     padding=MODEL_CONV_PADDING, activation='linear')(conv_3))
+                     padding=MODEL_CONV_PADDING, activation='linear')(dense_2))
     # compile it!
     model = Model(inputs=x, outputs=outputs_disaggregation)
     model.compile(loss='mean_squared_error',

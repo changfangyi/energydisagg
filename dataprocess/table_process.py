@@ -104,7 +104,7 @@ def _from_SQL(save_path):
     USER = 'tkfc'
     PWD = '1qaz@WSX'
     DBNAME = 'iii_bees_all'
-    sql_query = ("SELECT * FROM raw_training_data WHERE reporttime BETWEEN '2018-05-1 00:00:00' AND '2018-05-30 00:00:00' ")
+    sql_query = ("SELECT * FROM raw_training_data WHERE reporttime BETWEEN '2017-12-01 00:00:00' AND '2018-08-30 00:00:00' ")
     stdout.flush()
     connection = pymysql.connect(host=HOST,
                              user=USER,
