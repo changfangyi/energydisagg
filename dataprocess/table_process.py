@@ -100,10 +100,10 @@ def _load_csv(load_path):
     return df
 
 def _from_SQL(save_path):
-    HOST = '223.27.48.230'
-    USER = 'tkfc'
-    PWD = '1qaz@WSX'
-    DBNAME = 'iii_bees_all'
+    HOST = '@@@@@@@@@@'
+    USER = '@@@@@@@@'
+    PWD = '@@@@@@@@@'
+    DBNAME = '@@@@@@@@@@'
     sql_query = ("SELECT * FROM raw_training_data WHERE reporttime BETWEEN '2017-12-01 00:00:00' AND '2018-08-30 00:00:00' ")
     stdout.flush()
     connection = pymysql.connect(host=HOST,
